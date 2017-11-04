@@ -1,0 +1,38 @@
+#include<stdio.h>
+
+struct n{
+int i;
+struct n *N;
+};
+
+struct n *arr[3];
+
+struct n *new(int i)
+{
+	struct n *t;
+	t = malloc(sizeof(struct n));
+	t->i=i;
+	t->N = NULL;
+	return t;
+}
+
+
+void main()
+{
+struct n *R;
+R = new(1);
+R->N = new(2);
+R->N->N = new(3);
+
+
+arr[1]=R;
+arr[2]=R->N;
+
+arr[2]->i=144;
+
+printf("%d  ",R->N->i);
+}
+
+
+
+

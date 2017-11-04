@@ -1,0 +1,29 @@
+CC = gcc
+CFLAGS = -I -g -w -Wall
+#CFLAGS += -DLOG_ERROR_DBG
+#CFLAGS += -DLOG_INFO_DBG
+#CFLAGS += -DLOG_ENTRY_DBG
+#CFLAGS += -DLOG_EXIT_DBG
+
+INCLUDE_PATH = ../includes
+MEMMAN = ../memman
+
+default:	server1
+server1:	server1.o logger.o merge_utils.o
+		$(CC) -pthread $(CFLAGS) -o $@ server1.o logger.o merge_utils.o $(MEMMAN)/alloc.c
+
+server1.o:	server1.c $(INCLUDE_PATH)/logger.h
+			$(CC)  $(CFLAGS) -c server1.c
+
+
+logger.o:	logger.c  $(INCLUDE_PATH)/logger.h
+			$(CC) $(CFLAGS) -c logger.c
+
+merge_utils.o:	merge_utils.c merge.h
+			$(CC) $(CFLAGS) -c merge_utils.c
+
+alloc.o:	$(MEMMAN)/alloc.c	  $(INCLUDE_PATH)/logger.h
+			$(CC) $(CFLAGS) -c $(MEMMAN)/alloc.c
+
+clean:
+		$(RM) *.o *~

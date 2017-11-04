@@ -1,0 +1,26 @@
+CC = gcc
+CFLAGS = -I -g -w -Wall
+CFLAGS += -DLOG_ERROR_DBG
+CFLAGS += -DLOG_INFO_DBG
+CFLAGS += -DLOG_ENTRY_DBG
+CFLAGS += -DLOG_EXIT_DBG
+
+INCLUDE_PATH = ../includes
+MEMMAN = ../memman
+
+default:	client
+client:	client.o logger.o
+		$(CC) -pthread $(CFLAGS) -o $@ client.o logger.o $(MEMMAN)/alloc.c
+
+client.o:	client.c  $(INCLUDE_PATH)/logger.h
+			$(CC) $(CFLAGS) -c client.c
+
+logger.o:	logger.c  $(INCLUDE_PATH)/logger.h
+			$(CC) $(CFLAGS) -c logger.c
+
+alloc.o:	$(MEMMAN)/alloc.c	  $(INCLUDE_PATH)/logger.h
+			$(CC) $(CFLAGS) -c $(MEMMAN)/alloc.c
+
+clean:
+		$(RM) *.o *~
+
